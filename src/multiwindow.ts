@@ -1,5 +1,5 @@
-import { BrowserWindow, shell } from 'electron';
-import { is } from './is';
+import { BrowserWindow, shell } from "electron";
+import { is } from "./is";
 
 export type Options = {
   loadURL: string | undefined;
@@ -7,7 +7,8 @@ export type Options = {
   baseOptions: Electron.BrowserWindowConstructorOptions;
 };
 
-export interface MultiNewOptions extends Electron.BrowserWindowConstructorOptions {
+export interface MultiNewOptions
+  extends Electron.BrowserWindowConstructorOptions {
   moduleName: string;
   url?: string;
 }
@@ -54,18 +55,29 @@ export class Multiwindow {
     return this.winModalMap;
   }
 
-  removeWin(winId: number) {
-    const moduleName = this.winIdsMap.get(winId);
+  removeWin(winName: string): void;
+  removeWin(winId: number): void;
+  removeWin(val: string | number) {
     try {
-      if (moduleName == undefined) return;
-      const win = this.winModalMap.get(moduleName);
-      this.winIdsMap.delete(winId);
-      this.winModalMap.delete(moduleName);
-      win?.close();
+      if (typeof val === "number") {
+        const moduleName = this.winIdsMap.get(val);
+        if (moduleName == undefined) return;
+        const win = this.winModalMap.get(moduleName);
+        this.winIdsMap.delete(val);
+        this.winModalMap.delete(moduleName);
+        win?.close();
+      } else {
+        const win = this.winModalMap.get(val);
+        this.winModalMap.delete(val);
+        win && this.winIdsMap.delete(win.id);
+        win?.close();
+      }
     } catch (error) {}
   }
 
-  getNewWindowOptions(options: MultiNewOptions): Electron.BrowserWindowConstructorOptions {
+  getNewWindowOptions(
+    options: MultiNewOptions
+  ): Electron.BrowserWindowConstructorOptions {
     return { ...this.baseOptions, ...options };
   }
 
@@ -77,29 +89,29 @@ export class Multiwindow {
     const win = new BrowserWindow({ ...this.baseOptions, ...options });
     this.winIdsMap.set(win.id, moduleName);
     this.winModalMap.set(moduleName, win);
-    win.on('close', () => {
+    win.on("close", () => {
       this.removeWin(win.id);
     });
 
-    win.on('ready-to-show', () => {
-      win.webContents.send('setWinInfo', {
+    win.on("ready-to-show", () => {
+      win.webContents.send("setWinInfo", {
         winViewId: win.id,
-        winViewModule: moduleName
+        winViewModule: moduleName,
       });
       win.show();
     });
 
     win.webContents.setWindowOpenHandler((details) => {
       shell.openExternal(details.url);
-      return { action: 'deny' };
+      return { action: "deny" };
     });
-    let path = options.url || '';
-    path = '#' + path;
+    let path = options.url || "";
+    path = "#" + path;
     if (is.dev && this.loadURL) {
       win.loadURL(this.loadURL + path);
     } else {
       win.loadFile(this.loadFile, {
-        hash: path
+        hash: path,
       });
     }
     return win;

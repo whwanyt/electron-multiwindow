@@ -30,4 +30,7 @@ multiwindow.newWindow({
   resizable: false,
   moduleName: 'login'
 });
+// get window
+getWin(moduleName: string)
+getIdWin(winId: number)
 ```

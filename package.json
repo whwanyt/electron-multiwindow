@@ -10,6 +10,15 @@
     "dist"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whwanyt/electron-multiwindow.git"
+  },
+  "author": "Alex Wei<https://github.com/alex8088>",
+  "homepage": "https://github.com/whwanyt/electron-multiwindow/tree/main#readme",
+  "bugs": {
+    "url": "https://github.com/whwanyt/electron-multiwindow/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
