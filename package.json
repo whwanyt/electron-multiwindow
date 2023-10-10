@@ -1,7 +1,7 @@
 {
   "name": "@whwan/electron-multiwindow",
   "description": "electron multi-window management and toolkit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
