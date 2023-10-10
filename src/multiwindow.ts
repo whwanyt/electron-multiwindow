@@ -40,15 +40,16 @@ export class Multiwindow {
     return this.instance;
   }
 
-  getWin(moduleName: string) {
-    return this.winModalMap.get(moduleName);
-  }
-
-  getIdWin(winId: number) {
-    const moduleName = this.winIdsMap.get(winId);
-    if (moduleName == undefined) return;
-    const win = this.winModalMap.get(moduleName);
-    return win;
+  getWin(moduleName: string): BrowserWindow | undefined;
+  getWin(winId: number): BrowserWindow | undefined;
+  getWin(val: string | number) {
+    if (typeof val === "number") {
+      const moduleName = this.winIdsMap.get(val);
+      if (moduleName == undefined) return;
+      const win = this.winModalMap.get(moduleName);
+      return win;
+    }
+    return this.winModalMap.get(val);
   }
 
   getWinds() {

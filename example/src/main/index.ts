@@ -20,6 +20,7 @@ function createWindow(): void {
       }
     }
   })
+  multiwindow.removeWin("wwww")
   multiwindow.newWindow({
     resizable: false,
     moduleName: 'login'
