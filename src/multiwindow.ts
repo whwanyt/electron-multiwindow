@@ -29,7 +29,6 @@ export class Multiwindow {
   static instance: Multiwindow;
 
   static initialize(options: Options) {
-    debugger;
     if (!this.instance) {
       this.instance = new Multiwindow(options);
     }
